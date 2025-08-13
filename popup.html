@@ -3,7 +3,7 @@
 <head>
     <style>
         body {
-            width: 300px;
+            width: 350px;
             padding: 20px;
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -60,12 +60,81 @@
         .error {
             color: #fc8181;
         }
+        
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .download-link:hover {
+            background: white;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .mode-selector {
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .mode-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .mode-selector select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #4a5568;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .mode-description {
+            font-size: 12px;
+            margin-top: 8px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
-    <h2>🕷️ Web Scraper</h2>
+    <h2> Web Scraper</h2>
+    
+    <div class="mode-selector">
+        <label for="scrapeMode">Scraping Mode:</label>
+        <select id="scrapeMode">
+            <option value="general">General Content (Organized)</option>
+            <option value="personal">Personal Data (Emails, Phones, Names)</option>
+        </select>
+        <div id="modeDescription" class="mode-description">
+            Scrapes all content organized by sections (text, links, images, etc.)
+        </div>
+    </div>
+    
     <button id="scrapeBtn" class="scrape-btn">Scrape This Page</button>
     <div id="status" class="status"></div>
+    <a id="downloadLink" class="download-link hidden" download> Download CSV</a>
     
     <script src="popup.js"></script>
 </body>
