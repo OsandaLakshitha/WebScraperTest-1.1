@@ -1,61 +1,29 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === 'createCSV') {
-        createAndDownloadCSV(request.data, request.url, request.title);
+    if (request.action === 'downloadFile') {
+        downloadFile(request.downloadUrl, request.filename, sendResponse);
+        return true; // Keep message channel open
     }
 });
 
-function createAndDownloadCSV(data, url, title) {
+function downloadFile(downloadUrl, filename, sendResponse) {
     try {
-        // Convert data to CSV format
-        const csvContent = convertToCSV(data);
-        
-        // Create filename with timestamp
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const domain = new URL(url).hostname;
-        const filename = `scraped-${domain}-${timestamp}.csv`;
-        
-        // Create blob and download
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url_blob = URL.createObjectURL(blob);
-        
         chrome.downloads.download({
-            url: url_blob,
+            url: downloadUrl,
             filename: filename,
-            saveAs: true
+            saveAs: true // This will show the "Save As" dialog like normal downloads
+        }, (downloadId) => {
+            if (chrome.runtime.lastError) {
+                console.error('Download error:', chrome.runtime.lastError);
+                if (sendResponse) sendResponse({ success: false, error: chrome.runtime.lastError.message });
+            } else {
+                console.log('CSV download initiated successfully:', filename);
+                console.log('Download ID:', downloadId);
+                if (sendResponse) sendResponse({ success: true, downloadId: downloadId });
+            }
         });
         
-        console.log('CSV created and downloaded:', filename);
     } catch (error) {
-        console.error('Error creating CSV:', error);
+        console.error('Error initiating download:', error);
+        if (sendResponse) sendResponse({ success: false, error: error.message });
     }
-}
-
-function convertToCSV(data) {
-    if (!data || data.length === 0) {
-        return 'No data scraped';
-    }
-    
-    // Get all unique keys from all objects
-    const allKeys = new Set();
-    data.forEach(item => {
-        Object.keys(item).forEach(key => allKeys.add(key));
-    });
-    
-    const headers = Array.from(allKeys);
-    
-    // Create CSV header
-    let csv = headers.map(header => `"${header}"`).join(',') + '\n';
-    
-    // Add data rows
-    data.forEach(item => {
-        const row = headers.map(header => {
-            const value = item[header] || '';
-            // Escape quotes and wrap in quotes
-            const escapedValue = String(value).replace(/"/g, '""');
-            return `"${escapedValue}"`;
-        });
-        csv += row.join(',') + '\n';
-    });
-    
-    return csv;
 }
