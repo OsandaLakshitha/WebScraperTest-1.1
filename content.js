@@ -1,12 +1,34 @@
+// Ensure content script is ready
+let isReady = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    isReady = true;
+});
+
+// If DOM is already loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        isReady = true;
+    });
+} else {
+    isReady = true;
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'scrape') {
         try {
+            if (!isReady) {
+                sendResponse({success: false, error: 'Page not ready'});
+                return true;
+            }
+            
             const scrapedData = scrapePageData();
             sendResponse({success: true, data: scrapedData});
         } catch (error) {
             console.error('Content script error:', error);
             sendResponse({success: false, error: error.message});
         }
+        return true; // Keep message channel open for async response
     }
 });
 

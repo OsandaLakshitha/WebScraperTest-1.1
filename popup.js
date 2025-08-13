@@ -12,34 +12,39 @@ document.addEventListener('DOMContentLoaded', function() {
             const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
             
             // Check if it's a valid URL for scraping
-            if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
-                throw new Error('Cannot scrape Chrome internal pages');
+            if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') || tab.url.startsWith('edge://') || tab.url.startsWith('about:')) {
+                throw new Error('Cannot scrape browser internal pages');
             }
-            
-            // Inject content script first, then send message
-            await chrome.scripting.executeScript({
-                target: { tabId: tab.id },
-                files: ['content.js']
-            });
-            
-            // Wait a bit for script to load
-            await new Promise(resolve => setTimeout(resolve, 100));
             
             // Execute content script to scrape data with retry logic
             let results;
             let attempts = 0;
-            const maxAttempts = 3;
+            const maxAttempts = 5;
             
             while (attempts < maxAttempts) {
                 try {
-                    results = await chrome.tabs.sendMessage(tab.id, {action: 'scrape'});
+                    results = await new Promise((resolve, reject) => {
+                        const timeout = setTimeout(() => {
+                            reject(new Error('Message timeout'));
+                        }, 5000);
+                        
+                        chrome.tabs.sendMessage(tab.id, {action: 'scrape'}, (response) => {
+                            clearTimeout(timeout);
+                            if (chrome.runtime.lastError) {
+                                reject(new Error(chrome.runtime.lastError.message));
+                            } else {
+                                resolve(response);
+                            }
+                        });
+                    });
                     break;
                 } catch (error) {
                     attempts++;
+                    console.log(`Attempt ${attempts} failed:`, error.message);
                     if (attempts >= maxAttempts) {
-                        throw error;
+                        throw new Error('Content script not responding. Please refresh the page and try again.');
                     }
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
             }
             
@@ -52,18 +57,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: tab.title
                 });
                 
-                status.textContent = 'Successfully scraped and downloaded!';
+                status.textContent = `Successfully scraped ${results.data.length} items!`;
                 status.className = 'status success';
             } else {
-                throw new Error('Failed to scrape data');
+                throw new Error(results ? results.error : 'Unknown scraping error');
             }
         } catch (error) {
             console.error('Scraping error:', error);
-            if (error.message.includes('Could not establish connection')) {
-                status.textContent = 'Error: Refresh the page and try again';
-            } else {
-                status.textContent = 'Error: ' + error.message;
-            }
+            status.textContent = error.message;
             status.className = 'status error';
         } finally {
             scrapeBtn.disabled = false;
