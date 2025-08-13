@@ -29,20 +29,6 @@ A **lightweight Chrome extension** for scraping data directly from web pages usi
 
 
 
-
-
-### 5. Screenshot Section
-Includes the screenshot with proper markdown formatting.
-
-```plaintext
-
-## 🖥️ Screenshot
-
-<p align="center">
-  <img src="/webScraper.png" alt="Extension Screenshot" width="500"/>
-</p>
-
-
 ## 📌 Tech Stack
 
 - JavaScript (Vanilla)
