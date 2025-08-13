@@ -1,7 +1,7 @@
 # 🕵️‍♂️ WebScraperTest-1.1
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.1-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Version-3-blue?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Chrome%20Extension-MV3-brightgreen?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" />
 </p>
