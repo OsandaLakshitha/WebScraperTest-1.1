@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Web Scraper",
+  "version": "1.0",
+  "description": "Scrape web page content and save to CSV",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "downloads"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Web Scraper"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*", "http://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

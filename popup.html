@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            width: 300px;
+            padding: 20px;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            color: white;
+        }
+        
+        h2 {
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 300;
+        }
+        
+        .scrape-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #4a5568;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .scrape-btn:hover {
+            background: white;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .scrape-btn:active {
+            transform: translateY(0);
+        }
+        
+        .status {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            min-height: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .success {
+            color: #68d391;
+        }
+        
+        .error {
+            color: #fc8181;
+        }
+    </style>
+</head>
+<body>
+    <h2>🕷️ Web Scraper</h2>
+    <button id="scrapeBtn" class="scrape-btn">Scrape This Page</button>
+    <div id="status" class="status"></div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
