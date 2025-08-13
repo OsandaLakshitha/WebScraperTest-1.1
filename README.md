@@ -43,8 +43,6 @@ A **lightweight Chrome extension** for scraping data directly from web pages usi
 ### 8. License and Footer Section
 Includes the license, modern buttons, and footer, fixing the missing backtick from the original.
 
-```plaintext
-
 ## 📜 License
 
 This project is licensed under the MIT License.
