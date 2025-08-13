@@ -28,6 +28,8 @@ A **lightweight Chrome extension** for scraping data directly from web pages usi
 | `popup.js`      | Connects UI actions to logic                     |
 
 
+---
+
 ## 🛠️ Installation
 
 1. **Clone the repository**:
@@ -72,8 +74,6 @@ Includes the screenshot with proper markdown formatting.
 ---
 
 
----
-
 ### 7. Contributing Section
 This section outlines how to contribute to the project, with properly formatted code blocks for each step.
 
@@ -92,7 +92,7 @@ This section outlines how to contribute to the project, with properly formatted 
     git push origin feature-name
 5. Open a Pull Request
 
-
+---
 
 ### License and Footer Section
 Includes the license, modern buttons, and footer, fixing the missing backtick from the original.
