@@ -35,7 +35,6 @@ A **lightweight Chrome extension** for scraping data directly from web pages usi
 Includes the screenshot with proper markdown formatting.
 
 ```plaintext
-Hello start{
 
 ## 🖥️ Screenshot
 
